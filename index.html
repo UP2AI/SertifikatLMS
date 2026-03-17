@@ -14,8 +14,8 @@
     <div class="max-w-6xl mx-auto px-4 py-8 flex items-center gap-4">
       <div class="p-4 bg-[#1e3a8a] rounded-2xl text-3xl">🎓</div>
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">Sistem Verifikasi Sertifikat</h1>
-        <p class="text-gray-600 text-base mt-1">Periksa validitas sertifikat elektronik dengan cepat.</p>
+        <h1 class="text-3xl font-bold text-gray-900">Verifikasi Sertifikat LMS</h1>
+        <p class="text-gray-600 text-base mt-1">Periksa validitas sertifikat elektronik LMS.</p>
       </div>
     </div>
   </header>
@@ -31,7 +31,7 @@
       <div class="mb-5">
         <textarea 
           id="codesInput" 
-          placeholder="Format: UNIQUE_NUMBER / ID_USER / ID_DATABASE / ID_COURSE / TANGGAL&#10;Contoh: ABC123 / USR001 / DB001 / CRS001 / 03/03/2026&#10;Satu baris satu nomor..."
+          placeholder="Contoh: ABC123 / USR001 / DB001 / CRS001 / 03/03/2026&#10;Satu baris satu nomor..."
           class="w-full h-56 p-5 border border-gray-300 bg-gray-50 rounded-2xl focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] focus:outline-none resize-none font-mono text-sm text-gray-700"
         ></textarea>
         <!-- The user's code relies on id="lineCount" to show total baris, we can keep it inside a flex -->
@@ -39,7 +39,7 @@
           <p class="text-xs text-gray-500 font-medium">
             Total baris: <span id="lineCount" class="font-bold text-[#31317a]">0</span>
           </p>
-          <p class="text-xs text-gray-400">Format: F / C / D / E / A</p>
+          <p class="text-xs text-gray-400">Maksimal 1000 baris per request</p>
         </div>
       </div>
 
@@ -152,7 +152,7 @@
 
   <!-- Footer -->
   <footer class="text-center py-8 text-gray-500 text-xs mb-6">
-    <p>© 2026 Sistem Verifikasi Sertifikat. Semua hak dilindungi.</p>
+    <p>© 2026 UP2AI.</p>
   </footer>
 
   <script src="script.js"></script>
