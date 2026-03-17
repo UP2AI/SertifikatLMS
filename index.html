@@ -8,133 +8,150 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🎓</text></svg>">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100 font-sans">
   <!-- Header -->
-  <header class="bg-white border-b border-gray-200">
-    <div class="max-w-6xl mx-auto px-4 py-8 flex items-center gap-3">
-      <span class="text-3xl">🎓</span>
+  <header class="bg-gray-100 mb-8">
+    <div class="max-w-6xl mx-auto px-4 py-8 flex items-center gap-4">
+      <div class="p-4 bg-[#1e3a8a] rounded-2xl text-3xl">🎓</div>
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">Sistem Verifikasi Sertifikat</h1>
-        <p class="text-gray-500 text-sm mt-1">Periksa validitas sertifikat elektronik dengan cepat.</p>
+        <h1 class="text-3xl font-bold text-gray-900">Sistem Verifikasi Sertifikat</h1>
+        <p class="text-gray-600 text-base mt-1">Periksa validitas sertifikat elektronik dengan cepat.</p>
       </div>
     </div>
   </header>
 
   <!-- Main Container -->
-  <main class="max-w-6xl mx-auto px-4 py-8">
+  <main class="max-w-4xl mx-auto px-4 mb-12">
     <!-- Input Section -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">📝 Input Nomor Referensi</h2>
+    <div class="bg-white rounded-3xl shadow-md p-8 mb-8">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <span>✏️</span> Input Nomor Referensi
+      </h2>
       
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700 mb-2">
-          Masukkan nomor referensi (maksimal 1000 baris)
-        </label>
+      <div class="mb-5">
         <textarea 
           id="codesInput" 
           placeholder="Format: UNIQUE_NUMBER / ID_USER / ID_DATABASE / ID_COURSE / TANGGAL&#10;Contoh: ABC123 / USR001 / DB001 / CRS001 / 03/03/2026&#10;Satu baris satu nomor..."
-          class="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 resize-none font-mono text-sm"
+          class="w-full h-56 p-5 border border-gray-300 bg-gray-50 rounded-2xl focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] focus:outline-none resize-none font-mono text-sm text-gray-700"
         ></textarea>
-        <p class="text-xs text-gray-500 mt-2">
-          Total baris: <span id="lineCount">0</span> | Format: F / C / D / E / A
-        </p>
+        <!-- The user's code relies on id="lineCount" to show total baris, we can keep it inside a flex -->
+        <div class="flex justify-between items-center mt-2 px-1">
+          <p class="text-xs text-gray-500 font-medium">
+            Total baris: <span id="lineCount" class="font-bold text-[#31317a]">0</span>
+          </p>
+          <p class="text-xs text-gray-400">Format: F / C / D / E / A</p>
+        </div>
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex gap-4">
+      <div class="flex gap-4 mt-6">
         <button 
           id="checkBtn" 
-          class="btn-primary flex items-center gap-2"
+          class="flex-1 bg-[#1e3a8a] hover:bg-[#153171] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md text-lg"
           disabled
         >
-          <span>🔍</span>
-          <span>Cek Validitas</span>
+          Verify Now
         </button>
         <button 
           id="clearBtn" 
-          class="btn-secondary"
+          class="bg-gray-200 hover:bg-gray-300 text-gray-600 font-semibold py-4 px-8 rounded-full transition-colors flex items-center justify-center gap-2"
         >
-          🗑️ Hapus Semua
+          Hapus Semua
         </button>
       </div>
     </div>
 
     <!-- Results Section -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-gray-800">📊 Hasil Verifikasi</h2>
+    <div class="bg-white rounded-3xl shadow-md p-8 mb-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold text-gray-900 flex items-center gap-3">
+          <span>📊</span> Hasil Verifikasi
+        </h2>
         <button 
           id="downloadBtn" 
-          class="btn-success hidden"
+          class="bg-green-50 text-green-700 hover:bg-green-100 border border-green-200 font-semibold py-2 px-4 rounded-full transition-colors text-sm shadow-sm hidden"
         >
           ⬇️ Download CSV
         </button>
       </div>
 
       <!-- Status Loading -->
-      <div id="loadingStatus" class="hidden mb-4 p-4 border border-gray-200 bg-gray-50 rounded-lg text-gray-700">
-        <div class="flex items-center gap-2">
-          <div class="spinner"></div>
+      <div id="loadingStatus" class="hidden mb-4 p-4 border border-indigo-100 bg-indigo-50 rounded-xl text-indigo-700">
+        <div class="flex items-center gap-3">
+          <div class="spinner border-indigo-200 border-t-indigo-600"></div>
           <span id="loadingText" class="font-medium text-sm">Memproses batch 1 dari 1...</span>
         </div>
       </div>
 
       <!-- Status Messages -->
-      <div id="successMessage" class="hidden mb-4 p-4 border border-green-200 bg-white rounded-lg text-green-700 text-sm font-medium"></div>
-      <div id="errorMessage" class="hidden mb-4 p-4 border border-red-200 bg-white rounded-lg text-red-700 text-sm font-medium"></div>
+      <div id="successMessage" class="hidden mb-6 p-4 border border-green-300 bg-green-100 rounded-2xl text-green-800 text-sm font-semibold flex items-center gap-2">✅</div>
+      <div id="errorMessage" class="hidden mb-5 p-4 border border-red-200 bg-red-50 rounded-xl text-red-700 text-sm font-semibold flex items-center gap-2 shadow-sm"></div>
 
       <!-- Summary Stats -->
-      <div id="statsContainer" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white p-4 rounded-lg border border-gray-200">
-          <p class="text-xs text-gray-500 uppercase font-semibold">Total</p>
-          <p class="text-2xl font-bold text-gray-900 mt-1" id="totalCount">0</p>
+      <div id="statsContainer" class="hidden grid grid-cols-4 gap-4 mb-8">
+        <div class="bg-blue-500 p-6 rounded-2xl text-white flex flex-col justify-center">
+          <div class="flex items-center gap-2 mb-2">
+            <span>💾</span>
+            <p class="text-xs uppercase font-semibold opacity-90">Total</p>
+          </div>
+          <p class="text-3xl font-bold" id="totalCount">0</p>
         </div>
-        <div class="bg-white p-4 rounded-lg border border-gray-200">
-          <p class="text-xs text-gray-500 uppercase font-semibold">Valid</p>
-          <p class="text-2xl font-bold text-gray-900 mt-1" id="validCount">0</p>
+        <div class="bg-green-300 p-6 rounded-2xl text-green-900 flex flex-col justify-center">
+          <div class="flex items-center gap-2 mb-2">
+            <span>🛡️</span>
+            <p class="text-xs uppercase font-semibold opacity-90">Valid</p>
+          </div>
+          <p class="text-3xl font-bold" id="validCount">0</p>
         </div>
-        <div class="bg-white p-4 rounded-lg border border-gray-200">
-          <p class="text-xs text-gray-500 uppercase font-semibold">Invalid</p>
-          <p class="text-2xl font-bold text-gray-900 mt-1" id="invalidCount">0</p>
+        <div class="bg-pink-300 p-6 rounded-2xl text-pink-900 flex flex-col justify-center">
+          <div class="flex items-center gap-2 mb-2">
+            <span>⚠️</span>
+            <p class="text-xs uppercase font-semibold opacity-90">Invalid</p>
+          </div>
+          <p class="text-3xl font-bold" id="invalidCount">0</p>
         </div>
-        <div class="bg-white p-4 rounded-lg border border-gray-200">
-          <p class="text-xs text-gray-500 uppercase font-semibold">Tingkat Valid</p>
-          <p class="text-2xl font-bold text-gray-900 mt-1" id="successRate">0%</p>
+        <div class="bg-blue-600 p-6 rounded-2xl text-white flex flex-col justify-center">
+          <div class="flex items-center gap-2 mb-2">
+            <span>📈</span>
+            <p class="text-xs uppercase font-semibold opacity-90">Tingkat Valid</p>
+          </div>
+          <p class="text-3xl font-bold" id="successRate">0%</p>
         </div>
       </div>
 
       <!-- Results Table -->
-      <div id="tableContainer" class="hidden overflow-x-auto mb-6">
-        <table class="w-full border-collapse text-sm">
-          <thead>
-            <tr class="bg-gray-100 border-b-2 border-gray-300">
-              <th class="px-4 py-3 text-left font-bold text-gray-700">No</th>
-              <th class="px-4 py-3 text-left font-bold text-gray-700">Nama</th>
-              <th class="px-4 py-3 text-left font-bold text-gray-700">Nomor Referensi</th>
-              <th class="px-4 py-3 text-center font-bold text-gray-700">Status</th>
+      <div id="tableContainer" class="hidden overflow-x-auto mb-6 rounded-2xl border border-gray-200">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-gray-50 text-gray-600 font-semibold border-b border-gray-200">
+            <tr>
+              <th class="px-5 py-4 w-16">No</th>
+              <th class="px-5 py-4">Nama</th>
+              <th class="px-5 py-4">Nomor Referensi</th>
+              <th class="px-5 py-4 text-center">Status</th>
             </tr>
           </thead>
-          <tbody id="resultsBody">
+          <tbody id="resultsBody" class="divide-y divide-gray-100 bg-white [&>tr:nth-child(even)]:bg-gray-50">
           </tbody>
         </table>
       </div>
 
       <!-- Pagination -->
-      <div id="paginationContainer" class="hidden flex justify-center items-center gap-2">
-        <button id="prevBtn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 disabled:opacity-50">← Sebelumnya</button>
-        <span id="pageInfo" class="px-4 py-2 text-gray-700">Halaman 1</span>
-        <button id="nextBtn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 disabled:opacity-50">Berikutnya →</button>
+      <div id="paginationContainer" class="hidden flex justify-center items-center gap-4 mt-8">
+        <button id="prevBtn" class="px-5 py-2 border border-gray-300 bg-white text-gray-700 rounded-full hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-white text-sm font-medium transition-colors">← Sebelumnya</button>
+        <span id="pageInfo" class="px-4 py-2 text-gray-600 text-sm font-medium">Halaman 1</span>
+        <button id="nextBtn" class="px-5 py-2 border border-gray-300 bg-white text-gray-700 rounded-full hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-white text-sm font-medium transition-colors">Berikutnya →</button>
       </div>
 
       <!-- No Results -->
-      <div id="noResults" class="text-center py-8 text-gray-500">
-        <p class="text-lg">Belum ada hasil. Masukkan nomor referensi dan klik "Cek Validitas"</p>
+      <div id="noResults" class="text-center py-12 text-gray-500">
+        <div class="text-4xl mb-3 opacity-50">📋</div>
+        <p class="text-base">Belum ada hasil. Masukkan nomor referensi dan klik "Verify Now"</p>
       </div>
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gray-800 text-gray-300 text-center py-4 mt-12">
+  <footer class="text-center py-8 text-gray-500 text-xs mb-6">
     <p>© 2026 Sistem Verifikasi Sertifikat. Semua hak dilindungi.</p>
   </footer>
 
