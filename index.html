@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Validitas Sertifikat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+      <h1 class="text-4xl font-bold mb-2">Sistem Verifikasi Sertifikat</h1>
+      <p class="text-blue-100">Periksa validitas sertifikat Anda dengan cepat dan mudah</p>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Input Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">📝 Input Nomor Referensi</h2>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Masukkan nomor referensi (maksimal 1000 baris)
+        </label>
+        <textarea 
+          id="codesInput" 
+          placeholder="Format: UNIQUE_NUMBER / ID_USER / ID_DATABASE / ID_COURSE / TANGGAL&#10;Contoh: ABC123 / USR001 / DB001 / CRS001 / 03/03/2026&#10;Satu baris satu nomor..."
+          class="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+        ></textarea>
+        <p class="text-xs text-gray-500 mt-2">
+          Total baris: <span id="lineCount">0</span> | Format: F / C / D / E / A
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-4">
+        <button 
+          id="checkBtn" 
+          class="btn-primary flex items-center gap-2"
+          disabled
+        >
+          <span>🔍</span>
+          <span>Cek Validitas</span>
+        </button>
+        <button 
+          id="clearBtn" 
+          class="btn-secondary"
+        >
+          🗑️ Hapus Semua
+        </button>
+      </div>
+
+      <!-- Configuration -->
+      <div class="bg-gray-100 p-4 rounded-lg">
+        <p class="text-sm font-medium text-gray-700 mb-2">⚙️ Konfigurasi API</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input 
+            type="text" 
+            id="apiUrl" 
+            placeholder="Google Apps Script Web App URL" 
+            class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+            value="https://script.google.com/macros/d/YOUR_DEPLOYMENT_ID/userweb?v=1"
+          >
+          <input 
+            type="password" 
+            id="apiKey" 
+            placeholder="API Key" 
+            class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+            value="cert_checker_2026_secret"
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-gray-800">📊 Hasil Verifikasi</h2>
+        <button 
+          id="downloadBtn" 
+          class="btn-success hidden"
+        >
+          ⬇️ Download CSV
+        </button>
+      </div>
+
+      <!-- Status Loading -->
+      <div id="loadingStatus" class="hidden mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div class="flex items-center gap-2">
+          <div class="spinner"></div>
+          <span id="loadingText">Memproses batch 1 dari 1...</span>
+        </div>
+      </div>
+
+      <!-- Status Messages -->
+      <div id="successMessage" class="hidden mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800"></div>
+      <div id="errorMessage" class="hidden mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800"></div>
+
+      <!-- Summary Stats -->
+      <div id="statsContainer" class="hidden grid grid-cols-4 gap-4 mb-6">
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <p class="text-sm text-gray-600">Total</p>
+          <p class="text-2xl font-bold text-blue-600" id="totalCount">0</p>
+        </div>
+        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+          <p class="text-sm text-gray-600">Valid</p>
+          <p class="text-2xl font-bold text-green-600" id="validCount">0</p>
+        </div>
+        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+          <p class="text-sm text-gray-600">Invalid</p>
+          <p class="text-2xl font-bold text-red-600" id="invalidCount">0</p>
+        </div>
+        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+          <p class="text-sm text-gray-600">Tingkat Valid</p>
+          <p class="text-2xl font-bold text-purple-600" id="successRate">0%</p>
+        </div>
+      </div>
+
+      <!-- Results Table -->
+      <div id="tableContainer" class="hidden overflow-x-auto mb-6">
+        <table class="w-full border-collapse text-sm">
+          <thead>
+            <tr class="bg-gray-100 border-b-2 border-gray-300">
+              <th class="px-4 py-3 text-left font-bold text-gray-700">No</th>
+              <th class="px-4 py-3 text-left font-bold text-gray-700">Nama</th>
+              <th class="px-4 py-3 text-left font-bold text-gray-700">Nomor Referensi</th>
+              <th class="px-4 py-3 text-center font-bold text-gray-700">Status</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody">
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div id="paginationContainer" class="hidden flex justify-center items-center gap-2">
+        <button id="prevBtn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 disabled:opacity-50">← Sebelumnya</button>
+        <span id="pageInfo" class="px-4 py-2 text-gray-700">Halaman 1</span>
+        <button id="nextBtn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 disabled:opacity-50">Berikutnya →</button>
+      </div>
+
+      <!-- No Results -->
+      <div id="noResults" class="text-center py-8 text-gray-500">
+        <p class="text-lg">Belum ada hasil. Masukkan nomor referensi dan klik "Cek Validitas"</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-300 text-center py-4 mt-12">
+    <p>© 2026 Sistem Verifikasi Sertifikat. Semua hak dilindungi.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
