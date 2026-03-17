@@ -150,26 +150,20 @@ async function handleCheckValidation() {
 }
 
 async function sendBatchToBackend(batch, apiUrl, apiKey) {
-  // Normalize URL - ensure it ends with v=1 for proper CORS handling
-  let normalizedUrl = apiUrl.trim();
-  if (!normalizedUrl.includes('?v=')) {
-    normalizedUrl += (normalizedUrl.includes('?') ? '&' : '?') + 'v=1';
-  }
-
   const payload = {
     api_key: apiKey,
     codes: batch
   };
 
   try {
-    const response = await fetch(normalizedUrl, {
+    const response = await fetch(apiUrl, {
       method: 'POST',
+      // Gunakan text/plain untuk MENGHINDARI CORS preflight (OPTIONS)
+      // Google Apps Script tetap bisa parse string JSON di e.postData.contents
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/plain;charset=utf-8'
       },
-      body: JSON.stringify(payload),
-      mode: 'cors',
-      credentials: 'omit'
+      body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
