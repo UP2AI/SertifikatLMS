@@ -158,8 +158,6 @@ async function sendBatchToBackend(batch, apiUrl, apiKey) {
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
-      // Gunakan text/plain untuk MENGHINDARI CORS preflight (OPTIONS)
-      // Google Apps Script tetap bisa parse string JSON di e.postData.contents
       headers: {
         'Content-Type': 'text/plain;charset=utf-8'
       },
