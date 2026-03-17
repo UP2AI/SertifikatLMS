@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cek Validitas Sertifikat</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🎓</text></svg>">
 </head>
 <body class="bg-gray-50">
   <!-- Header -->
@@ -55,25 +56,29 @@
       </div>
 
       <!-- Configuration -->
-      <div class="bg-gray-100 p-4 rounded-lg">
+      <form class="bg-gray-100 p-4 rounded-lg" id="configForm">
         <p class="text-sm font-medium text-gray-700 mb-2">⚙️ Konfigurasi API</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input 
-            type="text" 
+            type="url" 
             id="apiUrl" 
             placeholder="Google Apps Script Web App URL" 
-            class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+            class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value="https://script.google.com/macros/d/YOUR_DEPLOYMENT_ID/userweb?v=1"
+            required
           >
           <input 
             type="password" 
             id="apiKey" 
             placeholder="API Key" 
-            class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+            class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value="cert_checker_2026_secret"
+            required
+            autocomplete="off"
           >
         </div>
-      </div>
+        <p class="text-xs text-gray-600 mt-2">💡 Tip: Konfigurasi akan tersimpan di browser Anda secara lokal. Jangan share URL atau API Key.</p>
+      </form>
     </div>
 
     <!-- Results Section -->

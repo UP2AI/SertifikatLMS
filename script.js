@@ -150,18 +150,26 @@ async function handleCheckValidation() {
 }
 
 async function sendBatchToBackend(batch, apiUrl, apiKey) {
+  // Normalize URL - ensure it ends with v=1 for proper CORS handling
+  let normalizedUrl = apiUrl.trim();
+  if (!normalizedUrl.includes('?v=')) {
+    normalizedUrl += (normalizedUrl.includes('?') ? '&' : '?') + 'v=1';
+  }
+
   const payload = {
     api_key: apiKey,
     codes: batch
   };
 
   try {
-    const response = await fetch(apiUrl, {
+    const response = await fetch(normalizedUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      mode: 'cors',
+      credentials: 'omit'
     });
 
     if (!response.ok) {
