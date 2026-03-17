@@ -93,7 +93,7 @@ async function handleCheckValidation() {
   }
 
   // URL Cloudflare Worker yang akan kita deploy
-  const apiUrl = "https://URL_WORKER_ANDA.workers.dev"; // NANTI GANTI INI DENGAN URL ASLI WORKER
+  const apiUrl = "https://sertifikatlms.wisnuharicoyo29.workers.dev/";
 
   // Reset
   allResults = [];
