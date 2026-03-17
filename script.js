@@ -14,8 +14,6 @@ const codesInput = document.getElementById('codesInput');
 const checkBtn = document.getElementById('checkBtn');
 const clearBtn = document.getElementById('clearBtn');
 const downloadBtn = document.getElementById('downloadBtn');
-const apiUrlInput = document.getElementById('apiUrl');
-const apiKeyInput = document.getElementById('apiKey');
 const lineCountEl = document.getElementById('lineCount');
 const loadingStatus = document.getElementById('loadingStatus');
 const loadingText = document.getElementById('loadingText');
@@ -94,13 +92,8 @@ async function handleCheckValidation() {
     return;
   }
 
-  const apiUrl = apiUrlInput.value.trim();
-  const apiKey = apiKeyInput.value.trim();
-
-  if (!apiUrl || apiUrl.includes('YOUR_DEPLOYMENT_ID')) {
-    showMessage('error', 'Masukkan Google Apps Script Web App URL yang valid');
-    return;
-  }
+  // URL Cloudflare Worker yang akan kita deploy
+  const apiUrl = "https://URL_WORKER_ANDA.workers.dev"; // NANTI GANTI INI DENGAN URL ASLI WORKER
 
   // Reset
   allResults = [];
@@ -122,7 +115,7 @@ async function handleCheckValidation() {
       showLoading(true, `Memproses batch ${batchIndex + 1} dari ${totalBatches}...`);
 
       try {
-        const results = await sendBatchToBackend(batch, apiUrl, apiKey);
+        const results = await sendBatchToBackend(batch, apiUrl);
         allResults = allResults.concat(results);
         processedCount += batch.length;
       } catch (error) {
@@ -149,9 +142,8 @@ async function handleCheckValidation() {
   }
 }
 
-async function sendBatchToBackend(batch, apiUrl, apiKey) {
+async function sendBatchToBackend(batch, apiUrl) {
   const payload = {
-    api_key: apiKey,
     codes: batch
   };
 
@@ -159,7 +151,7 @@ async function sendBatchToBackend(batch, apiUrl, apiKey) {
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     });

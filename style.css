@@ -27,42 +27,45 @@
 }
 
 .btn-primary {
-  background-color: #3b82f6;
+  background-color: #111827;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #2563eb;
+  background-color: #374151;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:disabled {
-  background-color: #d1d5db;
+  background-color: #f3f4f6;
   cursor: not-allowed;
   color: #9ca3af;
+  border: 1px solid #e5e7eb;
 }
 
 .btn-secondary {
-  background-color: #ef4444;
-  color: white;
+  background-color: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
 }
 
 .btn-secondary:hover {
-  background-color: #dc2626;
+  background-color: #f3f4f6;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .btn-success {
-  background-color: #10b981;
-  color: white;
+  background-color: #ffffff;
+  color: #111827;
+  border: 1px solid #111827;
 }
 
 .btn-success:hover {
-  background-color: #059669;
+  background-color: #f9fafb;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* ========================================
@@ -70,8 +73,8 @@
    ======================================== */
 
 .spinner {
-  border: 3px solid #e5e7eb;
-  border-top: 3px solid #3b82f6;
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #111827;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -90,7 +93,8 @@
 
 textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.1);
+  border-color: #111827;
 }
 
 textarea::placeholder {
@@ -162,18 +166,18 @@ table tbody tr:last-child td {
 }
 
 .stat-card.success {
-  background-color: #f0fdf4;
-  border-color: #86efac;
+  background-color: #ffffff;
+  border-color: #e5e7eb;
 }
 
 .stat-card.error {
-  background-color: #fef2f2;
-  border-color: #fecaca;
+  background-color: #ffffff;
+  border-color: #e5e7eb;
 }
 
 .stat-card.info {
-  background-color: #eff6ff;
-  border-color: #93c5fd;
+  background-color: #ffffff;
+  border-color: #e5e7eb;
 }
 
 /* ========================================
